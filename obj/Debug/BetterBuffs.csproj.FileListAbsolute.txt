@@ -1,0 +1,7 @@
+C:\Projects\DotNET\Projects\BetterBuffs\bin\Debug\BetterBuffs.dll
+C:\Projects\DotNET\Projects\BetterBuffs\bin\Debug\BetterBuffs.pdb
+C:\Projects\DotNET\Projects\BetterBuffs\bin\Debug\Terraria.exe
+C:\Projects\DotNET\Projects\BetterBuffs\bin\Debug\Terraria.Libraries.ReLogic.ReLogic.dll
+C:\Projects\DotNET\Projects\BetterBuffs\obj\Debug\BetterBuffs.csprojResolveAssemblyReference.cache
+C:\Projects\DotNET\Projects\BetterBuffs\obj\Debug\BetterBuffs.dll
+C:\Projects\DotNET\Projects\BetterBuffs\obj\Debug\BetterBuffs.pdb
