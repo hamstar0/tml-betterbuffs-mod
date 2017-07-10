@@ -55,7 +55,7 @@ namespace BetterBuffs {
 		public override void PreUpdate() {
 			if( this.player.whoAmI == Main.myPlayer ) {
 				if( Main.mouseLeftRelease && Main.mouseLeft ) {
-					if( !this.IsLeftClickAndRelease ) {
+					if( !this.IsLeftClickAndRelease && !Main.playerInventory ) {
 						var mouse = new Rectangle( Main.mouseX, Main.mouseY, 1, 1 );
 
 						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles() ) {

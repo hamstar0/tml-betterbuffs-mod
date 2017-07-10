@@ -51,7 +51,7 @@ namespace BetterBuffs {
 			float ratio = 1f - ((float)buff_time / ( float)modplayer.MaxBuffTimes[buff_type]);
 			int height = (int)((float)this.ShadowBox.Height * ratio);
 			Rectangle rect = new Rectangle( 0, 0, this.ShadowBox.Width, height );
-			Color color = new Color( 255, 255, 255, 128 );
+			Color color = new Color( 255, 255, 255, 144 );
 			
 			Main.spriteBatch.Draw( this.ShadowBox, new Vector2(x, y), rect, color );
 		}
