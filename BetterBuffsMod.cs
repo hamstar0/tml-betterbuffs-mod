@@ -8,7 +8,7 @@ using Terraria.UI;
 
 namespace BetterBuffs {
 	public class BetterBuffsMod : Mod {
-		public Texture2D ShadowBox;
+		public Texture2D ShadowBox = null;
 
 
 
@@ -19,7 +19,9 @@ namespace BetterBuffs {
 				AutoloadSounds = true
 			};
 
-			this.ShadowBox = this.GetTexture( "ShadowBox" );
+			if( !Main.dedServ ) {
+				this.ShadowBox = this.GetTexture( "ShadowBox" );
+			}
 		}
 
 
