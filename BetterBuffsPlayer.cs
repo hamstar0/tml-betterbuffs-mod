@@ -4,7 +4,7 @@ using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-
+using Terraria.UI;
 
 namespace BetterBuffs {
 	class BetterBuffsPlayer : ModPlayer {
@@ -58,7 +58,7 @@ namespace BetterBuffs {
 					if( !this.IsLeftClickAndRelease && !Main.playerInventory ) {
 						var mouse = new Rectangle( Main.mouseX, Main.mouseY, 1, 1 );
 
-						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles() ) {
+						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles( InterfaceScaleType.Game ) ) {
 							if( kv.Value.Intersects( mouse ) ) {
 								BetterBuffHelpers.RefreshBuffAt( kv.Key );
 								break;

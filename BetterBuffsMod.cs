@@ -35,12 +35,12 @@ namespace BetterBuffs {
 
 						modplayer.UpdateBuffTimes();
 						
-						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles() ) {
+						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles( InterfaceScaleType.UI ) ) {
 							this.DrawShadow( player, kv.Value, player.buffType[kv.Key], player.buffTime[kv.Key] );
 						}
 
 						return true;
-					} );
+					}, InterfaceScaleType.UI );
 				layers.Insert( idx, interface_layer );
 			}
 		}
