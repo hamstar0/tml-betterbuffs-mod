@@ -36,7 +36,7 @@ namespace BetterBuffs {
 						modplayer.UpdateBuffTimes();
 						
 						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles() ) {
-							this.DrawShadow( player, kv.Value.X, kv.Value.Y, player.buffType[kv.Key], player.buffTime[kv.Key] );
+							this.DrawShadow( player, kv.Value, player.buffType[kv.Key], player.buffTime[kv.Key] );
 						}
 
 						return true;
@@ -46,16 +46,18 @@ namespace BetterBuffs {
 		}
 
 
-		public void DrawShadow( Player player, int x, int y, int buff_type, int buff_time ) {
+		public void DrawShadow( Player player, Rectangle rect, int buff_type, int buff_time ) {
 			var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
 			if( !modplayer.MaxBuffTimes.ContainsKey(buff_type) ) { return; }
 
 			float ratio = 1f - ((float)buff_time / ( float)modplayer.MaxBuffTimes[buff_type]);
-			int height = (int)((float)this.ShadowBox.Height * ratio);
-			Rectangle rect = new Rectangle( 0, 0, this.ShadowBox.Width, height );
-			Color color = new Color( 255, 255, 255, 144 );
+			int width = rect.Width;
+			int height = (int)((float)rect.Height * ratio);
+			var src_rect = new Rectangle( 0, 0, width, height );
+			var color = new Color( 255, 255, 255, 144 );
+			var pos = new Vector2( rect.X, rect.Y );
 			
-			Main.spriteBatch.Draw( this.ShadowBox, new Vector2(x, y), rect, color );
+			Main.spriteBatch.Draw( this.ShadowBox, pos, src_rect, color );
 		}
 	}
 }

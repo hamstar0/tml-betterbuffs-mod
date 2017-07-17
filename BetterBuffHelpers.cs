@@ -5,10 +5,23 @@ using Terraria;
 
 namespace BetterBuffs {
 	public static class BetterBuffHelpers {
+		public static Rectangle GetWorldFrameOfScreen() {
+			int screen_wid = (int)((float)Main.screenWidth / Main.GameZoomTarget);
+			int screen_hei = (int)((float)Main.screenHeight / Main.GameZoomTarget);
+			int screen_x = (int)Main.screenPosition.X + ((Main.screenWidth - screen_wid) / 2);
+			int screen_y = (int)Main.screenPosition.Y + ((Main.screenHeight - screen_hei) / 2);
+
+			return new Rectangle( screen_x, screen_y, screen_wid, screen_hei );
+		}
+
+
 		public static IDictionary<int, Rectangle> GetBuffIconRectangles() {
 			var rects = new Dictionary<int, Rectangle>();
 			var player = Main.LocalPlayer;
-			
+			var world_frame = BetterBuffHelpers.GetWorldFrameOfScreen();
+			var screen_offset = new Vector2( world_frame.X - Main.screenPosition.X, world_frame.Y - Main.screenPosition.Y );
+			int dim = (int)(32f / Main.GameZoomTarget);
+
 			for( int i = 0; i < 22; i++ ) {
 				if( player.buffType[i] <= 0 ) { continue; }
 
@@ -19,7 +32,10 @@ namespace BetterBuffs {
 					y += 50;
 				}
 
-				rects[i] = new Rectangle( x, y, 32, 32 );
+				x = (int)(((float)x / Main.GameZoomTarget) + screen_offset.X);
+				y = (int)(((float)y / Main.GameZoomTarget) + screen_offset.Y);
+
+				rects[i] = new Rectangle( x, y, dim, dim );
 			}
 
 			return rects;
