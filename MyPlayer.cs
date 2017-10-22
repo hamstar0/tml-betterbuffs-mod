@@ -6,23 +6,26 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 
+
 namespace BetterBuffs {
-	class BetterBuffsPlayer : ModPlayer {
+	class MyPlayer : ModPlayer {
 		public IDictionary<int, int> MaxBuffTimes = new Dictionary<int, int>();
+		public ISet<int> BuffLocks = new HashSet<int>();
 
 		public bool IsLeftClickAndRelease { get; private set; }
 
-
-
+		
 		////////////////
 
 		public override void Initialize() {
 			this.MaxBuffTimes = new Dictionary<int, int>();
+			this.BuffLocks = new HashSet<int>();
 		}
 
 		public override void clientClone( ModPlayer clone ) {
-			var myclone = (BetterBuffsPlayer)clone;
+			var myclone = (MyPlayer)clone;
 			myclone.MaxBuffTimes = this.MaxBuffTimes;
+			myclone.BuffLocks = this.BuffLocks;
 		}
 
 		////////////////
@@ -32,7 +35,7 @@ namespace BetterBuffs {
 			int buff_count = tags.GetInt( "buff_count" );
 
 			for( int i=0; i<buff_count; i++ ) {
-				this.MaxBuffTimes[ tags.GetInt("buff_type_"+i) ] = tags.GetInt("buff_time_"+i);
+				this.MaxBuffTimes[ tags.GetInt("buff_type_"+i) ] = tags.GetInt( "buff_time_"+i );
 			}
 		}
 
@@ -49,18 +52,24 @@ namespace BetterBuffs {
 			return tags;
 		}
 
+
 		////////////////
-
-
+		
 		public override void PreUpdate() {
 			if( this.player.whoAmI == Main.myPlayer ) {
 				if( Main.mouseLeftRelease && Main.mouseLeft ) {
 					if( !this.IsLeftClickAndRelease && !Main.playerInventory ) {
 						var mouse = new Rectangle( Main.mouseX, Main.mouseY, 1, 1 );
 
-						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles( InterfaceScaleType.Game ) ) {
+						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( InterfaceScaleType.Game ) ) {
+							int pos = kv.Key;
+
 							if( kv.Value.Intersects( mouse ) ) {
-								BetterBuffHelpers.RefreshBuffAt( kv.Key );
+								if( this.player.controlTorch ) {
+									this.ToggleBuffLock( pos );
+								} else {
+									BetterBuffHelpers.RefreshBuffAt( pos );
+								}
 								break;
 							}
 						}
@@ -77,23 +86,48 @@ namespace BetterBuffs {
 		////////////////
 
 		public void UpdateBuffTimes() {
-			ISet<int> mybuffs = new HashSet<int>();
+			ISet<int> active_buff_types = new HashSet<int>();
 
 			for( int i = 0; i < 22; i++ ) {
-				if( this.player.buffType[i] <= 0 ) { continue; }
 				int buff_type = this.player.buffType[i];
-				mybuffs.Add( buff_type );
+				int buff_time = this.player.buffTime[i];
+
+				if( buff_type <= 0 ) { continue; }
+
+				active_buff_types.Add( buff_type );
 
 				if( !this.MaxBuffTimes.ContainsKey( buff_type ) ) {
-					this.MaxBuffTimes[buff_type] = this.player.buffTime[i];
+					this.MaxBuffTimes[ buff_type ] = buff_time;
+				}
+
+				if( buff_time == 2 && this.BuffLocks.Contains(buff_type) ) {
+					BetterBuffHelpers.RefreshBuffAt( i );
 				}
 			}
 
-			foreach( var kv in this.MaxBuffTimes.ToList() ) {
-				if( !mybuffs.Contains( kv.Key ) ) {
-					this.MaxBuffTimes.Remove( kv.Key );
+			foreach( int buff_type in this.MaxBuffTimes.Keys.ToList() ) {
+				if( !active_buff_types.Contains( buff_type ) ) {
+					if( this.MaxBuffTimes.ContainsKey( buff_type ) ) {
+						this.MaxBuffTimes.Remove( buff_type );
+					}
+					if( this.BuffLocks.Contains( buff_type ) ) {
+						this.BuffLocks.Remove( buff_type );
+					}
+
 					continue;
 				}
+			}
+		}
+
+
+		public void ToggleBuffLock( int pos ) {
+			int buff_type = this.player.buffType[ pos ];
+			if( buff_type <= 0 ) { return; }
+			
+			if( this.BuffLocks.Contains(buff_type) ) {
+				this.BuffLocks.Remove( buff_type );
+			} else {
+				this.BuffLocks.Add( buff_type );
 			}
 		}
 	}

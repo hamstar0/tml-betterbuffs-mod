@@ -1,6 +1,7 @@
 author = hamstar
-version = 1.0.3.1
+version = 1.1.0
 displayName = Better Buffs
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = true
+side = Client
 homepage = https://forums.terraria.org/index.php?threads/better-buffs.59710/

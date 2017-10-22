@@ -50,15 +50,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterBuffHelpers.cs" />
-    <Compile Include="BetterBuffsItem.cs" />
+    <Compile Include="MyItem.cs" />
     <Compile Include="BetterBuffsMod.cs" />
-    <Compile Include="BetterBuffsPlayer.cs" />
+    <Compile Include="MyPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="build.txt" />
     <Content Include="description.txt" />
+    <Content Include="icon.png" />
+    <Content Include="LockBox.png" />
     <Content Include="ShadowBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

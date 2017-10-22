@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.UI;
 
+
 namespace BetterBuffs {
 	public static class BetterBuffHelpers {
 		public static Rectangle GetWorldFrameOfScreen() {
@@ -15,7 +16,7 @@ namespace BetterBuffs {
 		}
 
 
-		public static IDictionary<int, Rectangle> GetBuffIconRectangles( InterfaceScaleType scale_type ) {
+		public static IDictionary<int, Rectangle> GetBuffIconRectanglesByPosition( InterfaceScaleType scale_type ) {
 			var rects = new Dictionary<int, Rectangle>();
 			var player = Main.LocalPlayer;
 			var world_frame = BetterBuffHelpers.GetWorldFrameOfScreen();
@@ -26,7 +27,7 @@ namespace BetterBuffs {
 				dim = (int)((float)dim / Main.GameZoomTarget);
 			}
 
-			for( int i = 0; i < 22; i++ ) {
+			for( int i = 0; i < player.buffType.Length; i++ ) {
 				if( player.buffType[i] <= 0 ) { continue; }
 
 				int x = 32 + i * 38;

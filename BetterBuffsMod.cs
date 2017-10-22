@@ -9,6 +9,7 @@ using Terraria.UI;
 namespace BetterBuffs {
 	public class BetterBuffsMod : Mod {
 		public Texture2D ShadowBox = null;
+		public Texture2D LockBox = null;
 
 
 
@@ -21,6 +22,7 @@ namespace BetterBuffs {
 
 			if( !Main.dedServ ) {
 				this.ShadowBox = this.GetTexture( "ShadowBox" );
+				this.LockBox = this.GetTexture( "LockBox" );
 			}
 		}
 
@@ -31,12 +33,21 @@ namespace BetterBuffs {
 				var interface_layer = new LegacyGameInterfaceLayer( "BetterBuffDisplays: Buff Overlay",
 					delegate {
 						Player player = Main.LocalPlayer;
-						var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
+						var modplayer = player.GetModPlayer<MyPlayer>();
 
 						modplayer.UpdateBuffTimes();
 						
-						foreach( var kv in BetterBuffHelpers.GetBuffIconRectangles( InterfaceScaleType.UI ) ) {
-							this.DrawShadow( player, kv.Value, player.buffType[kv.Key], player.buffTime[kv.Key] );
+						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( InterfaceScaleType.UI ) ) {
+							int pos = kv.Key;
+							Rectangle rect = kv.Value;
+							int buff_type = player.buffType[pos];
+							int buff_time = player.buffTime[pos];
+
+							this.DrawShadow( player, rect, buff_type, buff_time );
+
+							if( modplayer.BuffLocks.Contains( buff_type ) ) {
+								this.DrawLock( player, rect, buff_type, buff_time );
+							}
 						}
 
 						return true;
@@ -47,7 +58,7 @@ namespace BetterBuffs {
 
 
 		public void DrawShadow( Player player, Rectangle rect, int buff_type, int buff_time ) {
-			var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
+			var modplayer = player.GetModPlayer<MyPlayer>();
 			if( !modplayer.MaxBuffTimes.ContainsKey(buff_type) ) { return; }
 
 			float ratio = 1f - ((float)buff_time / ( float)modplayer.MaxBuffTimes[buff_type]);
@@ -58,6 +69,17 @@ namespace BetterBuffs {
 			var pos = new Vector2( rect.X, rect.Y );
 			
 			Main.spriteBatch.Draw( this.ShadowBox, pos, src_rect, color );
+		}
+
+
+		public void DrawLock( Player player, Rectangle rect, int buff_type, int buff_time ) {
+			var modplayer = player.GetModPlayer<MyPlayer>();
+			if( !modplayer.MaxBuffTimes.ContainsKey( buff_type ) ) { return; }
+
+			var pos = new Vector2( rect.X - 4, rect.Y - 4 );
+			var color = new Color( 255, 255, 255, 160 );
+
+			Main.spriteBatch.Draw( this.LockBox, pos, null, color );
 		}
 	}
 }
