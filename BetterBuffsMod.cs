@@ -34,10 +34,8 @@ namespace BetterBuffs {
 					delegate {
 						Player player = Main.LocalPlayer;
 						var modplayer = player.GetModPlayer<MyPlayer>();
-
-						modplayer.UpdateBuffTimes();
 						
-						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( InterfaceScaleType.UI ) ) {
+						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( false ) ) {
 							int pos = kv.Key;
 							Rectangle rect = kv.Value;
 							int buff_type = player.buffType[pos];
@@ -61,9 +59,10 @@ namespace BetterBuffs {
 			var modplayer = player.GetModPlayer<MyPlayer>();
 			if( !modplayer.MaxBuffTimes.ContainsKey(buff_type) ) { return; }
 
+			Texture2D tex = this.ShadowBox;
 			float ratio = 1f - ((float)buff_time / ( float)modplayer.MaxBuffTimes[buff_type]);
-			int width = rect.Width;
-			int height = (int)((float)rect.Height * ratio);
+			int width = tex.Width;
+			int height = (int)((float)tex.Height * ratio);
 			var src_rect = new Rectangle( 0, 0, width, height );
 			var color = new Color( 255, 255, 255, 144 );
 			var pos = new Vector2( rect.X, rect.Y );
@@ -77,7 +76,7 @@ namespace BetterBuffs {
 			if( !modplayer.MaxBuffTimes.ContainsKey( buff_type ) ) { return; }
 
 			var pos = new Vector2( rect.X - 4, rect.Y - 4 );
-			var color = new Color( 255, 255, 255, 160 );
+			var color = new Color( 255, 255, 255, 128 );
 
 			Main.spriteBatch.Draw( this.LockBox, pos, null, color );
 		}

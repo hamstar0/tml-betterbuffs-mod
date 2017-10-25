@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.UI;
 
 
 namespace BetterBuffs {
@@ -56,19 +56,23 @@ namespace BetterBuffs {
 		////////////////
 		
 		public override void PreUpdate() {
+			this.UpdateBuffTimes();
+
 			if( this.player.whoAmI == Main.myPlayer ) {
 				if( Main.mouseLeftRelease && Main.mouseLeft ) {
 					if( !this.IsLeftClickAndRelease && !Main.playerInventory ) {
 						var mouse = new Rectangle( Main.mouseX, Main.mouseY, 1, 1 );
 
-						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( InterfaceScaleType.Game ) ) {
+						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( true ) ) {
 							int pos = kv.Key;
 
 							if( kv.Value.Intersects( mouse ) ) {
+								if( !BetterBuffHelpers.CanRefreshBuffAt( this.player, pos ) ) { continue; }
+
 								if( this.player.controlTorch ) {
 									this.ToggleBuffLock( pos );
-								} else {
-									BetterBuffHelpers.RefreshBuffAt( pos );
+								} else if( this.player.buffType[pos] != BuffID.PotionSickness ) {
+									BetterBuffHelpers.RefreshBuffAt( this.player, pos );
 								}
 								break;
 							}
@@ -81,13 +85,12 @@ namespace BetterBuffs {
 				}
 			}
 		}
-
 		
 		////////////////
 
 		public void UpdateBuffTimes() {
 			ISet<int> active_buff_types = new HashSet<int>();
-
+			
 			for( int i = 0; i < 22; i++ ) {
 				int buff_type = this.player.buffType[i];
 				int buff_time = this.player.buffTime[i];
@@ -99,9 +102,11 @@ namespace BetterBuffs {
 				if( !this.MaxBuffTimes.ContainsKey( buff_type ) ) {
 					this.MaxBuffTimes[ buff_type ] = buff_time;
 				}
-
-				if( buff_time == 2 && this.BuffLocks.Contains(buff_type) ) {
-					BetterBuffHelpers.RefreshBuffAt( i );
+				
+				if( buff_time < 5 && this.BuffLocks.Contains(buff_type) ) {
+					if( BetterBuffHelpers.CanRefreshBuffAt( this.player, i ) ) {
+						BetterBuffHelpers.RefreshBuffAt( this.player, i );
+					}
 				}
 			}
 
@@ -119,6 +124,8 @@ namespace BetterBuffs {
 			}
 		}
 
+
+		////////////////
 
 		public void ToggleBuffLock( int pos ) {
 			int buff_type = this.player.buffType[ pos ];
