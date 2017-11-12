@@ -8,10 +8,18 @@ using Terraria.UI;
 
 namespace BetterBuffs {
 	public class BetterBuffsMod : Mod {
+		public static string GithubUserName { get { return "hamstar0"; } }
+		public static string GithubProjectName { get { return "tml-betterbuffs-mod"; } }
+
+
+		////////////////
+
 		public Texture2D ShadowBox = null;
 		public Texture2D LockBox = null;
 
 
+
+		////////////////
 
 		public override void Load() {
 			this.Properties = new ModProperties() {
@@ -26,6 +34,7 @@ namespace BetterBuffs {
 			}
 		}
 
+		////////////////
 
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Inventory" ) );

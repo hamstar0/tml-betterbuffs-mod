@@ -103,7 +103,7 @@ namespace BetterBuffs {
 					this.MaxBuffTimes[ buff_type ] = buff_time;
 				}
 				
-				if( buff_time < 5 && this.BuffLocks.Contains(buff_type) ) {
+				if( buff_time == 1 && this.BuffLocks.Contains(buff_type) ) {
 					if( BetterBuffHelpers.CanRefreshBuffAt( this.player, i ) ) {
 						BetterBuffHelpers.RefreshBuffAt( this.player, i );
 					}
