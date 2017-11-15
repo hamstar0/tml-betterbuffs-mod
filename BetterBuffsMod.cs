@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,7 +8,7 @@ using Terraria.UI;
 
 
 namespace BetterBuffs {
-	public class BetterBuffsMod : Mod {
+	class BetterBuffsMod : Mod {
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-betterbuffs-mod"; } }
 
@@ -27,6 +28,12 @@ namespace BetterBuffs {
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
+
+			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
+			var min_ver = new Version( 1, 2, 0 );
+			if( hamhelpmod.Version < min_ver ) {
+				throw new Exception( "Hamstar Helpers must be version " + min_ver.ToString() + " or greater." );
+			}
 
 			if( !Main.dedServ ) {
 				this.ShadowBox = this.GetTexture( "ShadowBox" );
