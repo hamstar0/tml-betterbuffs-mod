@@ -43,7 +43,7 @@ namespace BetterBuffs {
 				var interface_layer = new LegacyGameInterfaceLayer( "BetterBuffDisplays: Buff Overlay",
 					delegate {
 						Player player = Main.LocalPlayer;
-						var modplayer = player.GetModPlayer<MyPlayer>();
+						var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
 						
 						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( false ) ) {
 							int pos = kv.Key;
@@ -66,7 +66,7 @@ namespace BetterBuffs {
 
 
 		public void DrawShadow( Player player, Rectangle rect, int buff_type, int buff_time ) {
-			var modplayer = player.GetModPlayer<MyPlayer>();
+			var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
 			if( !modplayer.MaxBuffTimes.ContainsKey(buff_type) ) { return; }
 
 			Texture2D tex = this.ShadowBox;
@@ -82,7 +82,7 @@ namespace BetterBuffs {
 
 
 		public void DrawLock( Player player, Rectangle rect, int buff_type, int buff_time ) {
-			var modplayer = player.GetModPlayer<MyPlayer>();
+			var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
 			if( !modplayer.MaxBuffTimes.ContainsKey( buff_type ) ) { return; }
 
 			var pos = new Vector2( rect.X - 4, rect.Y - 4 );

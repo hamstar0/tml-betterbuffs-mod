@@ -50,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterBuffHelpers.cs" />
-    <Compile Include="MyItem.cs" />
+    <Compile Include="BetterBuffsItem.cs" />
     <Compile Include="BetterBuffsMod.cs" />
-    <Compile Include="MyPlayer.cs" />
+    <Compile Include="BetterBuffsPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

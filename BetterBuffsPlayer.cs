@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace BetterBuffs {
-	class MyPlayer : ModPlayer {
+	class BetterBuffsPlayer : ModPlayer {
 		public IDictionary<int, int> MaxBuffTimes = new Dictionary<int, int>();
 		public ISet<int> BuffLocks = new HashSet<int>();
 
@@ -23,7 +23,7 @@ namespace BetterBuffs {
 		}
 
 		public override void clientClone( ModPlayer clone ) {
-			var myclone = (MyPlayer)clone;
+			var myclone = (BetterBuffsPlayer)clone;
 			myclone.MaxBuffTimes = this.MaxBuffTimes;
 			myclone.BuffLocks = this.BuffLocks;
 		}
