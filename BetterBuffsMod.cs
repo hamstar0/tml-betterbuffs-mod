@@ -29,12 +29,6 @@ namespace BetterBuffs {
 				AutoloadSounds = true
 			};
 
-			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_ver = new Version( 1, 2, 0 );
-			if( hamhelpmod.Version < min_ver ) {
-				throw new Exception( "Hamstar Helpers must be version " + min_ver.ToString() + " or greater." );
-			}
-
 			if( !Main.dedServ ) {
 				this.ShadowBox = this.GetTexture( "ShadowBox" );
 				this.LockBox = this.GetTexture( "LockBox" );
