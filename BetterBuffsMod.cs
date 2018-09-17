@@ -42,9 +42,11 @@ namespace BetterBuffs {
 			if( idx != -1 ) {
 				var interface_layer = new LegacyGameInterfaceLayer( "BetterBuffDisplays: Buff Overlay",
 					delegate {
+						if( Main.playerInventory ) { return true; }
+
 						Player player = Main.LocalPlayer;
 						var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
-						
+
 						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( false ) ) {
 							int pos = kv.Key;
 							Rectangle rect = kv.Value;
