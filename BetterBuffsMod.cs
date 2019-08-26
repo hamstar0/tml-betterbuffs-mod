@@ -9,8 +9,8 @@ using Terraria.UI;
 
 namespace BetterBuffs {
 	class BetterBuffsMod : Mod {
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-betterbuffs-mod"; } }
+		public static string GithubUserName => "hamstar0";
+		public static string GithubProjectName => "tml-betterbuffs-mod";
 
 
 		////////////////
