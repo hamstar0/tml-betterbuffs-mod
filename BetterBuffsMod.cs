@@ -40,7 +40,7 @@ namespace BetterBuffs {
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Inventory" ) );
 			if( idx != -1 ) {
-				var interface_layer = new LegacyGameInterfaceLayer( "BetterBuffDisplays: Buff Overlay",
+				var interfaceLayer = new LegacyGameInterfaceLayer( "BetterBuffDisplays: Buff Overlay",
 					delegate {
 						if( Main.playerInventory ) { return true; }
 
@@ -50,42 +50,42 @@ namespace BetterBuffs {
 						foreach( var kv in BetterBuffHelpers.GetBuffIconRectanglesByPosition( false ) ) {
 							int pos = kv.Key;
 							Rectangle rect = kv.Value;
-							int buff_type = player.buffType[pos];
-							int buff_time = player.buffTime[pos];
+							int buffType = player.buffType[pos];
+							int buffTime = player.buffTime[pos];
 
-							this.DrawShadow( player, rect, buff_type, buff_time );
+							this.DrawShadow( player, rect, buffType, buffTime );
 
-							if( modplayer.BuffLocks.Contains( buff_type ) ) {
-								this.DrawLock( player, rect, buff_type, buff_time );
+							if( modplayer.BuffLocks.Contains( buffType ) ) {
+								this.DrawLock( player, rect, buffType, buffTime );
 							}
 						}
 
 						return true;
 					}, InterfaceScaleType.UI );
-				layers.Insert( idx, interface_layer );
+				layers.Insert( idx, interfaceLayer );
 			}
 		}
 
 
-		public void DrawShadow( Player player, Rectangle rect, int buff_type, int buff_time ) {
+		public void DrawShadow( Player player, Rectangle rect, int buffType, int buffTime ) {
 			var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
-			if( !modplayer.MaxBuffTimes.ContainsKey(buff_type) ) { return; }
+			if( !modplayer.MaxBuffTimes.ContainsKey(buffType) ) { return; }
 
 			Texture2D tex = this.ShadowBox;
-			float ratio = 1f - ((float)buff_time / ( float)modplayer.MaxBuffTimes[buff_type]);
+			float ratio = 1f - ((float)buffTime / ( float)modplayer.MaxBuffTimes[buffType]);
 			int width = tex.Width;
 			int height = (int)((float)tex.Height * ratio);
-			var src_rect = new Rectangle( 0, 0, width, height );
+			var srcRect = new Rectangle( 0, 0, width, height );
 			var color = new Color( 255, 255, 255, 144 );
 			var pos = new Vector2( rect.X, rect.Y );
 			
-			Main.spriteBatch.Draw( this.ShadowBox, pos, src_rect, color );
+			Main.spriteBatch.Draw( this.ShadowBox, pos, srcRect, color );
 		}
 
 
-		public void DrawLock( Player player, Rectangle rect, int buff_type, int buff_time ) {
+		public void DrawLock( Player player, Rectangle rect, int buffType, int buffTime ) {
 			var modplayer = player.GetModPlayer<BetterBuffsPlayer>();
-			if( !modplayer.MaxBuffTimes.ContainsKey( buff_type ) ) { return; }
+			if( !modplayer.MaxBuffTimes.ContainsKey( buffType ) ) { return; }
 
 			var pos = new Vector2( rect.X - 4, rect.Y - 4 );
 			var color = new Color( 255, 255, 255, 128 );

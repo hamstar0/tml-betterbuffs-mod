@@ -32,9 +32,9 @@ namespace BetterBuffs {
 
 		public override void Load( TagCompound tags ) {
 			this.MaxBuffTimes = new Dictionary<int, int>();
-			int buff_count = tags.GetInt( "buff_count" );
+			int buffCount = tags.GetInt( "buff_count" );
 
-			for( int i=0; i<buff_count; i++ ) {
+			for( int i=0; i<buffCount; i++ ) {
 				this.MaxBuffTimes[ tags.GetInt("buff_type_"+i) ] = tags.GetInt( "buff_time_"+i );
 			}
 		}
@@ -89,34 +89,34 @@ namespace BetterBuffs {
 		////////////////
 
 		public void UpdateBuffTimes() {
-			ISet<int> active_buff_types = new HashSet<int>();
+			ISet<int> activeBuffTypes = new HashSet<int>();
 			
-			for( int i = 0; i < 22; i++ ) {
-				int buff_type = this.player.buffType[i];
-				int buff_time = this.player.buffTime[i];
+			for( int i = 0; i < this.player.buffType.Length; i++ ) {
+				int buffType = this.player.buffType[i];
+				int buffTime = this.player.buffTime[i];
 
-				if( buff_type <= 0 ) { continue; }
+				if( buffType <= 0 ) { continue; }
 
-				active_buff_types.Add( buff_type );
+				activeBuffTypes.Add( buffType );
 
-				if( !this.MaxBuffTimes.ContainsKey( buff_type ) ) {
-					this.MaxBuffTimes[ buff_type ] = buff_time;
+				if( !this.MaxBuffTimes.ContainsKey( buffType ) ) {
+					this.MaxBuffTimes[ buffType ] = buffTime;
 				}
 				
-				if( buff_time == 1 && this.BuffLocks.Contains(buff_type) ) {
+				if( buffTime == 1 && this.BuffLocks.Contains(buffType) ) {
 					if( BetterBuffHelpers.CanRefreshBuffAt( this.player, i ) ) {
 						BetterBuffHelpers.RefreshBuffAt( this.player, i );
 					}
 				}
 			}
 
-			foreach( int buff_type in this.MaxBuffTimes.Keys.ToList() ) {
-				if( !active_buff_types.Contains( buff_type ) ) {
-					if( this.MaxBuffTimes.ContainsKey( buff_type ) ) {
-						this.MaxBuffTimes.Remove( buff_type );
+			foreach( int buffType in this.MaxBuffTimes.Keys.ToList() ) {
+				if( !activeBuffTypes.Contains( buffType ) ) {
+					if( this.MaxBuffTimes.ContainsKey( buffType ) ) {
+						this.MaxBuffTimes.Remove( buffType );
 					}
-					if( this.BuffLocks.Contains( buff_type ) ) {
-						this.BuffLocks.Remove( buff_type );
+					if( this.BuffLocks.Contains( buffType ) ) {
+						this.BuffLocks.Remove( buffType );
 					}
 
 					continue;
@@ -128,13 +128,13 @@ namespace BetterBuffs {
 		////////////////
 
 		public void ToggleBuffLock( int pos ) {
-			int buff_type = this.player.buffType[ pos ];
-			if( buff_type <= 0 ) { return; }
+			int buffType = this.player.buffType[ pos ];
+			if( buffType <= 0 ) { return; }
 			
-			if( this.BuffLocks.Contains(buff_type) ) {
-				this.BuffLocks.Remove( buff_type );
+			if( this.BuffLocks.Contains(buffType) ) {
+				this.BuffLocks.Remove( buffType );
 			} else {
-				this.BuffLocks.Add( buff_type );
+				this.BuffLocks.Add( buffType );
 			}
 		}
 	}
