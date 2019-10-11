@@ -37,12 +37,8 @@ namespace BetterBuffs {
 			for( int i = 0; i < player.buffType.Length; i++ ) {
 				if( player.buffType[i] <= 0 ) { continue; }
 
-				int x = 32 + i * 38;
-				int y = 76;
-				if( i >= 11 ) {
-					x = 32 + (i - 11) * 38;
-					y += 50;
-				}
+				int x = 32 + ((i % 11) * 38);
+				int y = 76 + (50 * (i / 11));
 
 				//if( scaleType == InterfaceScaleType.UI ) {
 				//if( scaleType == InterfaceScaleType.Game ) {
